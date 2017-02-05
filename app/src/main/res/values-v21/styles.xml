@@ -1,0 +1,23 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="nextDotsComicTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/primary_text_dark</item>
+        <item name="android:windowBackground">?attr/actionModeSplitBackground</item>
+    </style>
+
+    <style name="Theme.nextDotsComicNoActionBar.NoActionBar.NextDots" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorTopBar</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/cardview_light_background</item>
+    </style>
+</resources>
