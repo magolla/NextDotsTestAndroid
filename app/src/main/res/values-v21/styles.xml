@@ -20,4 +20,11 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/cardview_light_background</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

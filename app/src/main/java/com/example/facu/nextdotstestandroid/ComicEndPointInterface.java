@@ -4,6 +4,7 @@ import com.example.facu.models.ComicListResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -35,8 +36,10 @@ public interface ComicEndPointInterface {
 
 
     @GET("v1/public/comics")
-    Call<ComicListResponse> getComicList(@Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+    Call<ComicListResponse> getComicList(@Query("limit") String limit,@Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
+    @GET("v1/public/comics/{comicId}")
+    Call<ComicListResponse> getComicDetail(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
 
 

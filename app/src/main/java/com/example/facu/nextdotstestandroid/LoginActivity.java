@@ -38,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setReadPermissions("email");
         callbackManager = CallbackManager.Factory.create();
 
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        if(accessToken != null) {
+            Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
+            startActivity(intent);
+        }
+
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
         ImageLoader.getInstance().init(config);
 
@@ -80,5 +87,16 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        if(accessToken != null) {
+            Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
+            startActivity(intent);
+        }
     }
 }
