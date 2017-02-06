@@ -1,6 +1,11 @@
 package com.example.facu.nextdotstestandroid;
 
-import com.example.facu.models.ComicListResponse;
+import com.example.facu.models.Response;
+import com.example.facu.models.Result;
+import com.example.facu.models.ResultCharacters;
+import com.example.facu.models.ResultCreators;
+import com.example.facu.models.ResultDetail;
+import com.example.facu.models.ResultSeries;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -36,11 +41,19 @@ public interface ComicEndPointInterface {
 
 
     @GET("v1/public/comics")
-    Call<ComicListResponse> getComicList(@Query("limit") String limit,@Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+    Call<Response<Result>> getComicList(@Query("limit") String limit, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
     @GET("v1/public/comics/{comicId}")
-    Call<ComicListResponse> getComicDetail(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+    Call<Response<ResultDetail>> getComicDetail(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
+    @GET("v1/public/series/{seriesId}")
+    Call<Response<ResultSeries>> getSeriesList(@Path("seriesId") String seriesId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+
+    @GET("v1/public/comics/{comicId}/creators")
+    Call<Response<ResultCreators>> getCreatorsList(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+
+    @GET("v1/public/comics/{comicId}/characters")
+    Call<Response<ResultCharacters>> getCharactersList(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
 
 }

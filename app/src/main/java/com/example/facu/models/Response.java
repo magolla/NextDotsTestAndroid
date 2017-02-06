@@ -8,7 +8,7 @@ import com.example.facu.models.Data;
 import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
 
-public class ComicListResponse {
+public class Response<T> {
 
 
     @SerializedName("code")
@@ -19,7 +19,7 @@ public class ComicListResponse {
     private String status;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private Data<T> data;
 
     public Integer getCode() {
         return code;

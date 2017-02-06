@@ -25,6 +25,14 @@ public class Result {
     @Expose
     private Thumbnail thumbnail;
 
+    //Agregados para el detalle
+
+
+
+//    @SerializedName("dates")
+//    @Expose
+//    private List<Date> dates = null;
+
 
     public Integer getId() {
         return id;
@@ -58,7 +66,5 @@ public class Result {
     public void setThumbnail(Thumbnail thumbnail) {
         this.thumbnail = thumbnail;
     }
-
-
 
 }

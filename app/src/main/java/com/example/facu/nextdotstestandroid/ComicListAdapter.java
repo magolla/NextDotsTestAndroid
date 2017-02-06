@@ -3,8 +3,6 @@ package com.example.facu.nextdotstestandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.facu.models.ComicListResponse;
+import com.example.facu.models.Response;
 import com.example.facu.models.Result;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-
-import java.util.List;
 
 /**
  * Created by facu on 03/02/17.
@@ -29,12 +24,12 @@ import java.util.List;
 public class ComicListAdapter extends BaseAdapter {
 
     Context context;
-    ComicListResponse comicListResponse;
+    Response<Result> response;
     private static LayoutInflater inflater = null;
 
-    public ComicListAdapter(Context context, ComicListResponse comicListResponse) {
+    public ComicListAdapter(Context context, Response<Result> response) {
         this.context = context;
-        this.comicListResponse = comicListResponse;
+        this.response = response;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -43,12 +38,12 @@ public class ComicListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return comicListResponse.getData().getResults().size();
+        return response.getData().getResults().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return comicListResponse.getData().getResults().get(position);
+        return response.getData().getResults().get(position);
     }
 
     @Override
@@ -77,15 +72,15 @@ public class ComicListAdapter extends BaseAdapter {
             TextView comicPrice = (TextView) vi.findViewById(R.id.comicPrice);
             TextView comicName = (TextView) vi.findViewById(R.id.comicName);
             ImageView comicImageUrl = (ImageView) vi.findViewById(R.id.comicImage);
-
-            String imagePath = comicListResponse.getData().getResults().get(position).getThumbnail().getPath() + "." + comicListResponse.getData().getResults().get(position).getThumbnail().getExtension();
-            if(comicListResponse.getData().getResults().get(position).getPrices().get(0).getPrice() == 0) {
+            Result result = (Result) response.getData().getResults().get(position);
+            String imagePath = result.getThumbnail().getPath() + "." + result.getThumbnail().getExtension();
+            if(result.getPrices().get(0).getPrice() == 0) {
                 comicPrice.setText("Agotado.");
             } else {
-                comicPrice.setText(Double.toString(comicListResponse.getData().getResults().get(position).getPrices().get(0).getPrice()));
+                comicPrice.setText(Double.toString(result.getPrices().get(0).getPrice()));
             }
 
-            comicName.setText(comicListResponse.getData().getResults().get(position).getTitle());
+            comicName.setText(result.getTitle());
             ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
 //            imageLoader.displayImage(imagePath, comicImageUrl);
             final View finalVi = vi;

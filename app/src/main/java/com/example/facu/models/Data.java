@@ -10,7 +10,7 @@ import com.example.facu.models.Result;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data {
+public class Data<T> {
 
     @SerializedName("offset")
     @Expose
@@ -26,7 +26,7 @@ public class Data {
     private Integer count;
     @SerializedName("results")
     @Expose
-    private List<Result> results = null;
+    private List<T> results = null;
 
     public Integer getOffset() {
         return offset;
@@ -60,11 +60,11 @@ public class Data {
         this.count = count;
     }
 
-    public List<Result> getResults() {
+    public List<T> getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(List<T> results) {
         this.results = results;
     }
 

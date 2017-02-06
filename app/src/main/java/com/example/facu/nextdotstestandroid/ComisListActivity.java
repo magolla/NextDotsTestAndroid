@@ -1,23 +1,21 @@
 package com.example.facu.nextdotstestandroid;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.facu.models.ComicListResponse;
+import com.example.facu.models.Response;
 import com.example.facu.models.Result;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -28,7 +26,7 @@ public class ComisListActivity extends AppCompatActivity {
 
 
     public static final String REGISTER_NUMBER = "30";
-    ComicListResponse comicListResponse;
+    Response<Result> response = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,38 +42,41 @@ public class ComisListActivity extends AppCompatActivity {
 
         ComicEndPointInterface apiService = retrofit.create(ComicEndPointInterface.class);
 
-        Call<ComicListResponse> call = apiService.getComicList(REGISTER_NUMBER,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+        Call<Response<Result>> call = apiService.getComicList(REGISTER_NUMBER,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
 
-        call.enqueue(new Callback<ComicListResponse>() {
+        call.enqueue(new Callback<Response<Result>>() {
+
+
             @Override
-            public void onResponse(Call<ComicListResponse> call, Response<ComicListResponse> response) {
-                comicListResponse = response.body();
-                listview.setAdapter(new ComicListAdapter(ComisListActivity.this,response.body()));
+            public void onResponse(Call<Response<Result>> call, final retrofit2.Response<Response<Result>> response) {
+                ComisListActivity.this.response = response.body();
+                listview.setAdapter(new ComicListAdapter(ComisListActivity.this,ComisListActivity.this.response));
+
+
             }
 
             @Override
-            public void onFailure(Call<ComicListResponse> call, Throwable t) {
+            public void onFailure(Call<Response<Result>> call, Throwable t) {
+                Toast.makeText(ComisListActivity.this, "Fallo al cargar la lista", Toast.LENGTH_SHORT).show();
             }
         });
 
+        ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
 
-//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//
-//                }
-//            }
-//        });
+        btnRandom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(response == null) {
+                    Toast.makeText(ComisListActivity.this, "Todavia esta cargando", Toast.LENGTH_SHORT).show();
+                } else {
+                    long seed = System.nanoTime();
+                    Collections.shuffle(response.getData().getResults(),new Random(seed));
+                    listview.setAdapter(new ComicListAdapter(ComisListActivity.this,response));
 
-//        vi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+                }
 
-
+            }
+        });
 
 
     }
