@@ -73,10 +73,10 @@ public class ComisListActivity extends AppCompatActivity {
 
         ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
         ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
-        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
+//        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
 
         btnRandom.setVisibility(View.GONE);
-        btnFilter.setVisibility(View.GONE);
+//        btnFilter.setVisibility(View.GONE);
         btnProfile.setVisibility(View.GONE);
 
         if(realmResults == null || realmResults.size() == 0) {
@@ -123,10 +123,10 @@ public class ComisListActivity extends AppCompatActivity {
 
         ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
         ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
-        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
+//        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
 
         btnRandom.setVisibility(View.VISIBLE);
-        btnFilter.setVisibility(View.VISIBLE);
+//        btnFilter.setVisibility(View.VISIBLE);
         btnProfile.setVisibility(View.VISIBLE);
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
