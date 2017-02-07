@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
-        if(accessToken != null) {
+        if (accessToken != null) {
             Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
             startActivity(intent);
         }
@@ -48,40 +48,22 @@ public class LoginActivity extends AppCompatActivity {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
         ImageLoader.getInstance().init(config);
 
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+        ProfileTracker mProfileTracker;
+        mProfileTracker = new ProfileTracker() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
-
-                ProfileTracker mProfileTracker;
-                mProfileTracker = new ProfileTracker() {
-                    @Override
-                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-
-                        Profile p;
-                        p = currentProfile;
-                        p.getFirstName();
-
-
-                        Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
-                        startActivity(intent);
-
-                    }
-                };
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                if (accessToken != null) {
+                    Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
+                    startActivity(intent);
+                }
 
             }
+        };
 
-            @Override
-            public void onCancel() {
-                Toast.makeText(LoginActivity.this,"Cancel", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
-        if(accessToken != null) {
+        if (accessToken != null) {
             Intent intent = new Intent(LoginActivity.this, ComisListActivity.class);
             startActivity(intent);
         }

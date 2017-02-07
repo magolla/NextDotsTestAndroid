@@ -29,7 +29,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="Titulo"
                     android:textStyle="normal|italic" />
             </RelativeLayout>
 
@@ -75,7 +74,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/linearLayoutImage"
-                    android:text="Precio: 8.50" />
+                    />
 
                 <TextView
                     android:id="@+id/comicDate"
@@ -85,7 +84,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/linearLayoutImage"
-                    android:text="20 junio del 2016" />
+                    />
 
                 <TextView
                     android:id="@+id/comicPageNumber"
@@ -95,7 +94,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/linearLayoutImage"
-                    android:text="20 paginas" />
+                    />
 
                 <CheckBox
                     android:id="@+id/favoriteChk"
@@ -119,7 +118,7 @@
                     android:id="@+id/comicSeriesList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Series: Serie 1, serie 2, serie 3" />
+                    />
 
 
             </RelativeLayout>
@@ -137,7 +136,7 @@
                     android:id="@+id/comicCreatorsList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Creadores: Cosme Fulanito, Jose Perez, Edward Norton, Pepe Grillo" />
+                    />
             </RelativeLayout>
 
             <View
@@ -154,7 +153,7 @@
                     android:id="@+id/comicCharactersList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Personajes: Mob, Saitama, Johan, Hanamichi, Musashi" />
+                    />
             </RelativeLayout>
 
             <View
@@ -178,7 +177,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="dsad"
                         android:textColor="@color/cardview_dark_background" />
 
                 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.facu.nextdotstestandroid;
 
+import android.content.Intent;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -136,9 +137,16 @@ public class ComisListActivity extends AppCompatActivity {
                     long seed = System.nanoTime();
                     Collections.shuffle(response.getData().getResults(),new Random(seed));
                     listview.setAdapter(new ComicListAdapter(ComisListActivity.this,response));
-
                 }
 
+            }
+        });
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComisListActivity.this,ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }

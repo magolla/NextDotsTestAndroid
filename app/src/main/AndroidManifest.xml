@@ -3,7 +3,7 @@
     package="com.example.facu.nextdotstestandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +24,8 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".ComisListActivity" />
-        <activity android:name=".ComicDetailActivity"></activity>
+        <activity android:name=".ComicDetailActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
