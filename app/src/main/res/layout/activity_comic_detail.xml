@@ -96,6 +96,14 @@
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/linearLayoutImage"
                     android:text="20 paginas" />
+
+                <CheckBox
+                    android:id="@+id/favoriteChk"
+                    android:button="@drawable/custom_checkbox"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <View

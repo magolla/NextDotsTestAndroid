@@ -1,7 +1,11 @@
 package com.example.facu.nextdotstestandroid;
 
+import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -10,10 +14,13 @@ import android.widget.Toast;
 
 import com.example.facu.models.Response;
 import com.example.facu.models.Result;
+import com.example.facu.realmModels.SavedComics;
 
 import java.util.Collections;
 import java.util.Random;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -33,7 +40,61 @@ public class ComisListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comis_list);
 
+        Realm.init(getApplicationContext());
+
+        final Realm comicsRealm = Realm.getDefaultInstance();
+
+        RealmResults<SavedComics> realmResults = comicsRealm.where(SavedComics.class).findAll();
         listview = (ListView) findViewById(R.id.comicList);
+
+        if(isNetworkAvailable()) {
+            listview.setVisibility(View.VISIBLE);
+            internetAvaible();
+        } else {
+            internetNotAvaible(realmResults);
+        }
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(!isNetworkAvailable()) {
+            final Realm comicsRealm = Realm.getDefaultInstance();
+            RealmResults<SavedComics> realmResults = comicsRealm.where(SavedComics.class).findAll();
+            internetNotAvaible(realmResults);
+        }
+    }
+
+    private void internetNotAvaible(RealmResults<SavedComics> realmResults) {
+
+        ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
+        ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
+        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
+
+        btnRandom.setVisibility(View.GONE);
+        btnFilter.setVisibility(View.GONE);
+        btnProfile.setVisibility(View.GONE);
+
+        if(realmResults == null || realmResults.size() == 0) {
+            Toast.makeText(this, "No posees comics guardados en favoritos.", Toast.LENGTH_SHORT).show();
+            listview.setVisibility(View.GONE);
+            return;
+        } else {
+            listview.setVisibility(View.VISIBLE);
+        }
+
+
+        listview = (ListView) findViewById(R.id.comicList);
+
+        listview.setAdapter(new ComicListAdapterNotNewtwork(ComisListActivity.this,realmResults));
+
+    }
+
+    private void internetAvaible() {
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApplicationConstant.BASE_URL)
@@ -51,8 +112,6 @@ public class ComisListActivity extends AppCompatActivity {
             public void onResponse(Call<Response<Result>> call, final retrofit2.Response<Response<Result>> response) {
                 ComisListActivity.this.response = response.body();
                 listview.setAdapter(new ComicListAdapter(ComisListActivity.this,ComisListActivity.this.response));
-
-
             }
 
             @Override
@@ -62,7 +121,12 @@ public class ComisListActivity extends AppCompatActivity {
         });
 
         ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
+        ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
+        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
 
+        btnRandom.setVisibility(View.VISIBLE);
+        btnFilter.setVisibility(View.VISIBLE);
+        btnProfile.setVisibility(View.VISIBLE);
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +141,13 @@ public class ComisListActivity extends AppCompatActivity {
 
             }
         });
+    }
 
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
