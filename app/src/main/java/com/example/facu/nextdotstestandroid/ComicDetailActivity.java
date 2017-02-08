@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -120,7 +119,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
         apiService = retrofit.create(ComicEndPointInterface.class);
 
-        Call<Response<ResultDetail>> call = apiService.getComicDetail(comicId,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+        Call<Response<ResultDetail>> call = apiService.getComicDetail(comicId,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
 
         call.enqueue(new Callback<Response<ResultDetail>>() {
 
@@ -198,9 +197,9 @@ public class ComicDetailActivity extends AppCompatActivity {
                 String[] parts = resultDetail.getSeries().getResourceURI().split("/");
                 String seriesId = parts[parts.length-1];
 
-                Call<Response<ResultCreators>> callCreators = apiService.getCreatorsList(comicId,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
-                Call<Response<ResultCharacters>> callCharacters = apiService.getCharactersList(comicId,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
-                Call<Response<ResultSeries>> callSeries = apiService.getSeriesList(seriesId,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+                Call<Response<ResultCreators>> callCreators = apiService.getCreatorsList(comicId,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+                Call<Response<ResultCharacters>> callCharacters = apiService.getCharactersList(comicId,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+                Call<Response<ResultSeries>> callSeries = apiService.getSeriesList(seriesId,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
 
                 loadCreators(callCreators,creatorsList);
                 loadCharacters(callCharacters,charactersList);

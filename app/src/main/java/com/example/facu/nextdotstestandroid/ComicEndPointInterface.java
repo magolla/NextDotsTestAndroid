@@ -43,6 +43,9 @@ public interface ComicEndPointInterface {
     @GET("v1/public/comics")
     Call<Response<Result>> getComicList(@Query("limit") String limit, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
+    @GET("v1/public/comics")
+    Call<Response<Result>> getComicFilter(@Query("startYear") String startYear,@Query("titleStartsWith") String titleStartsWith,@Query("title") String title, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+
     @GET("v1/public/comics/{comicId}")
     Call<Response<ResultDetail>> getComicDetail(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
 
@@ -54,6 +57,8 @@ public interface ComicEndPointInterface {
 
     @GET("v1/public/comics/{comicId}/characters")
     Call<Response<ResultCharacters>> getCharactersList(@Path("comicId") String comicId, @Query("ts") String ts, @Query("apikey") String apikey, @Query("hash") String hash);
+
+
 
 
 }

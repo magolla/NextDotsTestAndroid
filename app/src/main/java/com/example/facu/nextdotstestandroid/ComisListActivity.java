@@ -1,14 +1,14 @@
 package com.example.facu.nextdotstestandroid;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -73,10 +73,10 @@ public class ComisListActivity extends AppCompatActivity {
 
         ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
         ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
-//        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
+        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
 
         btnRandom.setVisibility(View.GONE);
-//        btnFilter.setVisibility(View.GONE);
+        btnFilter.setVisibility(View.GONE);
         btnProfile.setVisibility(View.GONE);
 
         if(realmResults == null || realmResults.size() == 0) {
@@ -96,7 +96,6 @@ public class ComisListActivity extends AppCompatActivity {
 
     private void internetAvaible() {
 
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApplicationConstant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -104,7 +103,7 @@ public class ComisListActivity extends AppCompatActivity {
 
         ComicEndPointInterface apiService = retrofit.create(ComicEndPointInterface.class);
 
-        Call<Response<Result>> call = apiService.getComicList(REGISTER_NUMBER,ApplicationConstant.RS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+        Call<Response<Result>> call = apiService.getComicList(REGISTER_NUMBER,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
 
         call.enqueue(new Callback<Response<Result>>() {
 
@@ -123,11 +122,12 @@ public class ComisListActivity extends AppCompatActivity {
 
         ImageButton btnRandom = (ImageButton) findViewById(R.id.shuffleButton);
         ImageButton btnProfile = (ImageButton) findViewById(R.id.profileButton);
-//        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
+        ImageButton btnFilter = (ImageButton) findViewById(R.id.filterButton);
 
         btnRandom.setVisibility(View.VISIBLE);
-//        btnFilter.setVisibility(View.VISIBLE);
+        btnFilter.setVisibility(View.VISIBLE);
         btnProfile.setVisibility(View.VISIBLE);
+
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +149,97 @@ public class ComisListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // custom dialog
+        final Dialog dialog = new Dialog(ComisListActivity.this);
+        dialog.setContentView(R.layout.filter_dialog);
+        dialog.setTitle("Aplicar Filtros");
+
+
+        Button applyFilter = (Button) dialog.findViewById(R.id.applyFilter);
+        Button cancelFilter = (Button) dialog.findViewById(R.id.cancelFilter);
+
+
+
+
+
+
+
+        cancelFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        applyFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String title = null;
+                String titleBegin = null;
+                String year = null;
+
+
+                final EditText completeTitle = (EditText) dialog.findViewById(R.id.completeTitleEdit);
+
+                if(!(completeTitle.getText().toString().equals("") || completeTitle.getText().toString().equals(null))) {
+                    title = completeTitle.getText().toString();
+                }
+
+                final EditText launchYear = (EditText) dialog.findViewById(R.id.launchYearEdit);
+
+                if(!(launchYear.getText().toString().equals("") && !launchYear.getText().toString().equals(null))) {
+                    year = launchYear.getText().toString();
+                }
+
+                final EditText titleBeginWith = (EditText) dialog.findViewById(R.id.titleBeginWithEdit);
+
+                if(!(titleBeginWith.getText().toString().equals("") && !titleBeginWith.getText().toString().equals(null))) {
+                    titleBegin = titleBeginWith.getText().toString();
+                }
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(ApplicationConstant.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                ComicEndPointInterface apiService = retrofit.create(ComicEndPointInterface.class);
+
+
+                Call<Response<Result>> call = apiService.getComicFilter(year,titleBegin,title,ApplicationConstant.TS,ApplicationConstant.APIKEY,ApplicationConstant.HASH);
+
+                call.enqueue(new Callback<Response<Result>>() {
+
+
+                    @Override
+                    public void onResponse(Call<Response<Result>> call, final retrofit2.Response<Response<Result>> response) {
+                        ComisListActivity.this.response = response.body();
+                        if(response.body() == null) {
+                            Toast.makeText(ComisListActivity.this, "No se encontro ningun comic con los criterios ingresados", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        listview.setAdapter(new ComicListAdapter(ComisListActivity.this,ComisListActivity.this.response));
+
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Response<Result>> call, Throwable t) {
+                        dialog.dismiss();
+                        Toast.makeText(ComisListActivity.this, "Fallo al cargar la lista", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
     }
 
 
